@@ -27,5 +27,6 @@ int main(int argc, char** argv) {
         o << "Writing to output file." << std::endl;
         o.close();
     }
+    //jack is stupid
     return 0;
 }
