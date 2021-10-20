@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "DSLinkedList.h"
 
 /**
  * catch_setup.h and catch_setup.cpp contain the #define directive for
