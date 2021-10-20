@@ -19,7 +19,7 @@
 
 int main(int argc, char** argv) {
     if(argc == 1) {
-        runCatchTests();
+        //runCatchTests();
     }
     else {
         std::cout << "Hello, 2341 students!" << std::endl;
