@@ -21,10 +21,6 @@ public:
         next = nullptr;
     }
 
-    ~Node() {
-        delete prev;
-        delete next;
-    }
 };
 
 template<typename DT>class DSLinkedList{
@@ -35,23 +31,21 @@ public:
         head = nullptr;
     }
     ~DSLinkedList() {
-        while (head->next != nullptr) {
-            Node<DT>* next = head->next;
-            delete head;
-            head = next;
-            if (next == nullptr) {
-                delete next;
-            }
+        Node<DT>* curr = head;
+        while (head != nullptr) {
+            head = head->next;
+            delete[] curr;
+            curr = head;
         }
     }
     void append(DT data) {
         Node<DT>* node = new Node<DT>[1];
         node->data = data;
-        if(head == nullptr){
+        if(head == nullptr){ //check if list empty
             head = node;
             cout<<"new node added(firstnode) !"<<endl;
             return;
-        }
+        }//if not empty, new node added to end
         Node<DT>* temp = head;
         Node<DT>* prev;
         while(temp->next != nullptr){
@@ -62,13 +56,147 @@ public:
         temp->prev = prev; //once at end, final data value is linked
         cout<<"new node added at back!"<<endl;
     }
+    void prepend(DT item){
+        Node<DT>* node = new Node<DT>[1];
+        node->data = item;
+        if(head == nullptr){ //list checked if empty
+            head = node;
+            cout<<"new node added(firstnode) !"<<endl;
+            return;
+        } //if list not empty, list traversed
+        head->prev = node;
+        node->next = head;
+        head = node;
+        cout<<"new node added at front !"<<endl;
+    }
+    int length(){
+        int len = 0;
+        Node<DT>* temp = head;
+        while(temp != nullptr){ //iterates to end and increments length for length
+            len++;
+            temp = temp->next;
+        }
+        return len;
+    }
 
-
-
-
-    void insert(DT item) {
+    void insert(int index, DT item){
+        if(index > length() || index < 0){ //checks if index out of bounds
+            cout<<"index out of bound !"<<endl;
+            return;
+        }
+        Node<DT>* node = new Node<DT>[1]; //temporary iterator created
+        node->data = item;
+        int count = 0;
+        Node<DT>* temp = head;
+        while(temp != nullptr && count < index){
+            if(count == index-1){
+                if(temp->next != nullptr){
+                    node->next = temp->next;
+                }
+                temp->next = node;
+                node->prev = temp;
+                cout<<"new node added at index "<<index<<" !"<<endl;
+                break;
+            }
+            count++;
+            temp = temp->next;
+        }
 
     }
+    void displayAll(){
+        if(head == nullptr){
+            cout<<"linked list is empty"<<endl;
+            return;
+        }
+        cout<<endl<<"---DSlink list items-----"<<endl;
+        Node<DT>* temp = head;
+        while(temp != nullptr){
+            cout<<temp->data<<" | ";
+            temp = temp->next;
+        }
+        cout<<endl<<"--------------------------"<<endl;
+    }
+    void pop(){
+        if(head == nullptr){ //checks if list already empty
+            cout<<"linked list is empty !"<<endl;
+            return;
+        }
+        if(head->next == nullptr){ //checks if list has one item
+            head = nullptr;
+            cout<<"last item removed"<<endl;
+            return;
+        }
+        Node<DT>* temp = head;
+        while(temp != nullptr){ //iterates to end and deletes all nodes of list
+            if(temp->next->next == nullptr){
+                temp->next = nullptr;
+                cout<<"last item removed"<<endl;
+                break;
+            }
+            temp = temp->next;
+        }
+    }
+    void removeFront(){
+        if(head == nullptr){ //checks if list empty
+            cout<<"linked list is empty !"<<endl;
+            return;
+        }
+        head = head->next;
+        head->next->prev = head;
+        cout<<"front item removed"<<endl; //iterates to front, removes front node
+    }
+
+    DT get(int index){
+        if(head == nullptr){ //checks if linkedlist empty
+            cout<<"linked list is empty !"<<endl;
+            return -999999;
+        }
+        if(index >= length() || index < 0){ //checks if invalid index,
+            cout<<"index out of bound !"<<endl;
+            return -999999;
+        }
+        if(index == 0){
+            return head->data;
+        }
+        int count = 0;
+        DT res;
+        Node<DT>* temp = head;
+        while(temp != nullptr){
+            if(count++ == index){
+                res = temp->data;
+                break;
+            }
+            temp = temp->next;
+        }
+        return res;
+    }
+    void removeat(int index){
+        if(head == nullptr){
+            cout<<"linked list is empty !"<<endl;
+            return;
+        }
+        if(index >= length() || index < 0){
+            cout<<"index out of bound !"<<endl;
+            return;
+        }
+        if(index == 0){
+            removeFront();
+            cout<<"item removed at index "<<index<<endl;
+            return;
+        }
+        int count = 0;
+        Node<DT>* temp = head;
+        while(temp != nullptr){
+            if(count == index - 1){
+                temp->next = temp->next->next;
+                cout<<"item removed at index "<<index<<endl;
+                break;
+            }
+            count++;
+            temp = temp->next;
+        }
+    }
+
 
 };
 
