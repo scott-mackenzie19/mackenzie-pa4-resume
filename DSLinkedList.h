@@ -20,7 +20,6 @@ public:
         prev = nullptr;
         next = nullptr;
     }
-
 };
 
 template<typename DT>class DSLinkedList{
@@ -127,10 +126,10 @@ public:
             return;
         }
         Node<DT>* temp = head;
-        while(temp != nullptr){ //iterates to end and deletes all nodes of list
+        while(temp != nullptr){ //iterates to end and deletes last node of list
             if(temp->next->next == nullptr){
                 temp->next = nullptr;
-                cout<<"last item removed"<<endl;
+                cout<<"end item removed"<<endl;
                 break;
             }
             temp = temp->next;
@@ -149,11 +148,13 @@ public:
     DT get(int index){
         if(head == nullptr){ //checks if linkedlist empty
             cout<<"linked list is empty !"<<endl;
-            return -999999;
+            DT useless;
+            return useless;
         }
         if(index >= length() || index < 0){ //checks if invalid index,
             cout<<"index out of bound !"<<endl;
-            return -999999;
+            DT useless;
+            return useless;
         }
         if(index == 0){
             return head->data;

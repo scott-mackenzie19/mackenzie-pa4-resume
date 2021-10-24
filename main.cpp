@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include "DSLinkedList.h"
+#include "DSstack.h"
 
 /**
  * catch_setup.h and catch_setup.cpp contain the #define directive for
@@ -25,11 +26,16 @@ int main(int argc, char** argv) {
     else {
         std::cout << "Hello, 2341 students!" << std::endl;
         std::cout << "Attempting to open and write to " << argv[0] << std::endl;
-        DSLinkedList<string> newvec;
-        newvec.prepend("Lego");
-        newvec.prepend("Bool");
-        newvec.insert(1, "balls");
-        newvec.displayAll();
+        DSstack<string> stringStack;
+        stringStack.push("Michael Norwood");
+        stringStack.push("Aye");
+        stringStack.push("Leggo");
+        stringStack.print();
+        stringStack.pop();
+        stringStack.print();
+        stringStack.pop();
+        stringStack.pop();
+        stringStack.pop();
         std::ofstream o(argv[3]);
         o << "Writing to output file." << std::endl;
         o.close();
