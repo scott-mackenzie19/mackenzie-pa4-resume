@@ -7,6 +7,7 @@
 #include <fstream>
 #include "DSLinkedList.h"
 #include "DSstack.h"
+#include "C"
 
 /**
  * catch_setup.h and catch_setup.cpp contain the #define directive for

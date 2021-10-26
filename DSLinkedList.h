@@ -5,6 +5,7 @@
 #ifndef INC_21F_FLIGHT_PLANNER_DSLINKEDLIST_H
 #define INC_21F_FLIGHT_PLANNER_DSLINKEDLIST_H
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 template <typename DT> class Node {
@@ -29,12 +30,41 @@ public:
     DSLinkedList() {
         head = nullptr;
     }
+    DSLinkedList(const DSLinkedList<DT>& copylist) {
+        const Node<DT> *cpCurrent = copylist.head;
+        Node<DT>* lscurrent = nullptr;
+        if (cpCurrent != nullptr) {
+            head = new Node<DT>;
+            head->data = cpCurrent->data;
+            cpCurrent = cpCurrent->next;
+        }
+        while (cpCurrent != nullptr) {
+            Node<DT>* newNode = new Node<DT>;
+            newNode->data = cpCurrent ->data;
+            lscurrent->next = newNode;
+            lscurrent = lscurrent->next;
+            cpCurrent = cpCurrent->next;
+        }
+    }
+    DSLinkedList<DT>& operator = (const DSLinkedList<DT>& rhs) {
+        DSLinkedList<DT> temp(rhs);
+        swap(temp.head, head);
+        return *this;
+    }
     ~DSLinkedList() {
         Node<DT>* curr = head;
         while (head != nullptr) {
             head = head->next;
             delete[] curr;
             curr = head;
+        }
+    }
+    DSLinkedList<DT>& operator= (const DSLinkedList<DT>& data) {
+        Node<DT>* temp = data.head;
+        Node<DT>* temp2 = this->head;
+        while (temp->next != nullptr) {
+            temp2->data = temp->data;
+            temp = temp->next;
         }
     }
     void append(DT data) {
