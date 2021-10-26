@@ -46,7 +46,7 @@ public:
             cpCurrent = cpCurrent->next;
         }
     }
-    DSLinkedList<DT>& operator = (const DSLinkedList<DT>& rhs) {
+    DSLinkedList<DT>& operator =(const DSLinkedList<DT>& rhs) {
         DSLinkedList<DT> temp(rhs);
         swap(temp.head, head);
         return *this;
@@ -57,14 +57,6 @@ public:
             head = head->next;
             delete[] curr;
             curr = head;
-        }
-    }
-    DSLinkedList<DT>& operator= (const DSLinkedList<DT>& data) {
-        Node<DT>* temp = data.head;
-        Node<DT>* temp2 = this->head;
-        while (temp->next != nullptr) {
-            temp2->data = temp->data;
-            temp = temp->next;
         }
     }
     void append(DT data) {
