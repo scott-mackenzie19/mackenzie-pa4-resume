@@ -25,18 +25,16 @@ int main(int argc, char** argv) {
         //runCatchTests();
     }
     else {
+        runCatchTests();
         std::cout << "Hello, 2341 students!" << std::endl;
         std::cout << "Attempting to open and write to " << argv[0] << std::endl;
         DSstack<string> stringStack;
-        stringStack.push("Michael Norwood");
-        stringStack.push("Aye");
-        stringStack.push("Leggo");
-        stringStack.print();
-        stringStack.pop();
-        stringStack.print();
-        stringStack.pop();
-        stringStack.pop();
-        stringStack.pop();
+        DSLinkedList<string> list;
+        DSLinkedList<string> list2;
+        list.append("no");
+        list.append("aye");
+        list.append("yes");
+        list2 = list;
         std::ofstream o(argv[3]);
         o << "Writing to output file." << std::endl;
         o.close();

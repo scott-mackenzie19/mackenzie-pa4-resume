@@ -30,24 +30,8 @@ public:
     DSLinkedList() {
         head = nullptr;
     }
-    DSLinkedList(const DSLinkedList<DT>& copylist) {
-        const Node<DT> *cpCurrent = copylist.head;
-        Node<DT>* lscurrent = nullptr;
-        if (cpCurrent != nullptr) {
-            head = new Node<DT>;
-            head->data = cpCurrent->data;
-            cpCurrent = cpCurrent->next;
-        }
-        while (cpCurrent != nullptr) {
-            Node<DT>* newNode = new Node<DT>;
-            newNode->data = cpCurrent ->data;
-            lscurrent->next = newNode;
-            lscurrent = lscurrent->next;
-            cpCurrent = cpCurrent->next;
-        }
-    }
     DSLinkedList<DT>& operator =(const DSLinkedList<DT>& rhs) {
-        DSLinkedList<DT> temp(rhs);
+        DSLinkedList<DT> temp;
         swap(temp.head, head);
         return *this;
     }
@@ -179,7 +163,7 @@ public:
             return useless;
         }
         if(index == 0){
-            return head->data;
+            return head->data; //if index 0, return head
         }
         int count = 0;
         DT res;

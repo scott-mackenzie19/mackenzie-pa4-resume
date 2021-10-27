@@ -40,9 +40,9 @@ public:
     DT getTop() {
         if (this->isEmpty()) {
             cout << "Stack is empty" << endl;
-            return;
+            return this->stack.get(0);
         }
-        DT holder = stack.get(top);
+        DT holder = stack.get(top );
         return holder;
 
     }
