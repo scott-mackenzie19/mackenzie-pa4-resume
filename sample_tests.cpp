@@ -34,10 +34,10 @@ TEST_CASE("Linked List", "[DSLinkedList]") {
         list.append("LEss gooo");
         list.append("score some fookin");
         list.append("Goalssss!!!!");
-        list = list2;
+        list2 = list;
         //list2.displayAll();
         REQUIRE(list.get(1) == list2.get(1));
-        REQUIRE(list.get(0) == list.get(0));
+        REQUIRE(list2.get(0) == list.get(0));
     }
     SECTION("Append Function") {
         DSLinkedList<string> list;
@@ -57,5 +57,26 @@ TEST_CASE("Stack", "[DSstack]") {
         list.push("WHY");
         list.push("HELLO");
         REQUIRE(list.getTop() == "HELLO");
+    }
+    SECTION("Pop Function") {
+        DSstack<string> list;
+        list.push("AYE");
+        list.push("LETS");
+        list.pop();
+        list.pop();
+        REQUIRE(list.isEmpty());
+        list.push("AYE");
+        list.pop();
+        REQUIRE(list.isEmpty());
+        list.push("AYE");
+        list.push("LETS");
+        list.pop();
+        REQUIRE(!list.isEmpty());
+    }
+    SECTION("Is Empty") {
+        DSstack<string> list;
+        REQUIRE(list.isEmpty());
+        list.push("Aye");
+        REQUIRE(!list.isEmpty());
     }
 }

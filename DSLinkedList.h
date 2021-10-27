@@ -30,11 +30,36 @@ public:
     DSLinkedList() {
         head = nullptr;
     }
+    DSLinkedList(const DSLinkedList<DT>& source) {
+        if (source.head == nullptr) {
+            return;
+        }
+        head = new Node<DT>[1];
+        head->data = source.head->data;
+        head->next = nullptr;
+        head->prev = nullptr;
+        Node<DT> *lastCopied = source.head;  // last node to be copied
+        Node<DT> *lastAdded = head;         // last node to be added to the current list
+        while (lastCopied->next != nullptr) {
+            // create new node
+            Node<DT> *p = new Node<DT>[1];
+            p->data = lastCopied->next->data;
+            p->next = nullptr;
+
+            // link the newly created node to the last of the current list
+            lastAdded->next = p;
+            lastAdded = p;
+
+            // advance lastCopied
+            lastCopied = lastCopied->next;
+
+        }
+    }
     DSLinkedList<DT>& operator =(const DSLinkedList<DT>& rhs) {
-        DSLinkedList<DT> temp;
+        DSLinkedList<DT> temp(rhs);
         swap(temp.head, head);
         return *this;
-    }
+    } //needs work, shallow copy as of now
     ~DSLinkedList() {
         Node<DT>* curr = head;
         while (head != nullptr) {
@@ -48,7 +73,7 @@ public:
         node->data = data;
         if(head == nullptr){ //check if list empty
             head = node;
-            cout<<"new node added(firstnode) !"<<endl;
+            cout<<"new node added( first node) !"<<endl;
             return;
         }//if not empty, new node added to end
         Node<DT>* temp = head;
@@ -66,7 +91,7 @@ public:
         node->data = item;
         if(head == nullptr){ //list checked if empty
             head = node;
-            cout<<"new node added(firstnode) !"<<endl;
+            cout<<"new node added (first node) !"<<endl;
             return;
         } //if list not empty, list traversed
         head->prev = node;
