@@ -48,6 +48,14 @@ TEST_CASE("Linked List", "[DSLinkedList]") {
         REQUIRE(list.get(1) == "WHY");
         REQUIRE(list.get(2) == "HELLO");
     }
+    SECTION("Check List") {
+        DSLinkedList<string> list;
+        list.append("AYE");
+        list.append("WHY");
+        list.append("HELLO");
+        REQUIRE(list.contains("WHY"));
+        REQUIRE(!list.contains("moo"));
+    }
 }
 
 TEST_CASE("Stack", "[DSstack]") {

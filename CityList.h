@@ -13,12 +13,12 @@ using namespace std;
 class CityList {
 private:
     string originCity;
-    DSLinkedList<CityList> destinationList;
+    DSLinkedList<string> destinationList;
 public:
-    void setOrigin(string& word);
-    void setDestination( DSLinkedList<CityList>& destinations);
+    void setOrigin(string word);
+    void setDestination( DSLinkedList<string>& destinations);
     string getOrigin();
-    DSLinkedList<CityList> getDestinations();
+    DSLinkedList<string> getDestinations();
 };
 
 

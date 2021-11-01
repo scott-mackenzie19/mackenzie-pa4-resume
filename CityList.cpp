@@ -8,15 +8,15 @@ string CityList::getOrigin() {
     return originCity;
 }
 
-DSLinkedList<CityList> CityList::getDestinations() {
+DSLinkedList<string> CityList::getDestinations() {
     return destinationList;
 }
 
-void CityList::setOrigin(string &word) {
+void CityList::setOrigin(string word) {
     originCity = word;
 
 }
 
-void CityList::setDestination(DSLinkedList<CityList> &destinations) {
+void CityList::setDestination(DSLinkedList<string> &destinations) {
     destinationList = destinations;
 }

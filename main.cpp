@@ -18,6 +18,7 @@
  * machine.
  */
 #include "catch_setup.h"
+#include "rwfile.h"
 using namespace std;
 
 int main(int argc, char** argv) {
@@ -25,7 +26,7 @@ int main(int argc, char** argv) {
         //runCatchTests();
     }
     else {
-        runCatchTests();
+        //runCatchTests();
         std::cout << "Hello, 2341 students!" << std::endl;
         std::cout << "Attempting to open and write to " << argv[0] << std::endl;
         DSstack<string> stringStack;
@@ -35,6 +36,9 @@ int main(int argc, char** argv) {
         list.append("aye");
         list.append("yes");
         list2 = list;
+        string file = "sample01-flight-data.txt";
+        rwfile file2;
+        file2.loadAdjacency(file);
         std::ofstream o(argv[3]);
         o << "Writing to output file." << std::endl;
         o.close();

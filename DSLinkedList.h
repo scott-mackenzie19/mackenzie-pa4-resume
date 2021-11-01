@@ -228,8 +228,20 @@ public:
             temp = temp->next;
         }
     }
-
-
+bool contains(DT data) {
+        Node<DT>* temp = head;
+        if (head == nullptr) {
+            cout << "List is empty !" << endl;
+            return false;
+        }
+        while (temp != nullptr) {
+            if (temp->data == data) {
+                return true;
+            }
+            temp = temp->next;
+        }
+        return false;
+    }
 };
 
 #endif //INC_21F_FLIGHT_PLANNER_DSLINKEDLIST_H
