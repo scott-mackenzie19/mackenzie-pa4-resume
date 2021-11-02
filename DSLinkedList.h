@@ -25,10 +25,12 @@ public:
 
 template<typename DT>class DSLinkedList{
 private:
-    Node<DT>* head;
+    static Node<DT>* head;
+    static Node<DT>* tail;
 public:
     DSLinkedList() {
         head = nullptr;
+        tail = nullptr;
     }
     DSLinkedList(const DSLinkedList<DT>& source) {
         if (source.head == nullptr) {
@@ -73,6 +75,7 @@ public:
         node->data = data;
         if(head == nullptr){ //check if list empty
             head = node;
+            tail = node;
             cout<<"new node added( first node) !"<<endl;
             return;
         }//if not empty, new node added to end
@@ -83,6 +86,7 @@ public:
             temp = temp->next; //list traversed to the end
         }
         temp->next = node;
+        tail = node;
         temp->prev = prev; //once at end, final data value is linked
         cout<<"new node added at back!"<<endl;
     }
@@ -91,6 +95,7 @@ public:
         node->data = item;
         if(head == nullptr){ //list checked if empty
             head = node;
+            tail = node;
             cout<<"new node added (first node) !"<<endl;
             return;
         } //if list not empty, list traversed
@@ -109,7 +114,7 @@ public:
         return len;
     }
 
-    void insert(int index, DT item){
+    void DSInsert(int index, DT item){
         if(index > length() || index < 0){ //checks if index out of bounds
             cout<<"index out of bound !"<<endl;
             return;
@@ -164,6 +169,7 @@ public:
                 break;
             }
             temp = temp->next;
+            tail = temp;
         }
     }
     void removeFront(){
@@ -216,6 +222,9 @@ public:
             cout<<"item removed at index "<<index<<endl;
             return;
         }
+        if (index == length() - 1){
+            this->pop();
+        }
         int count = 0;
         Node<DT>* temp = head;
         while(temp != nullptr){
@@ -242,6 +251,51 @@ bool contains(DT data) {
         }
         return false;
     }
+    class iterator {
+        friend class DSLinkedList<DT>;
+    private:
+        Node<DT> *nodePtr;
+        // The constructor is private, so only friends
+        // can create instances of iterators.
+        iterator(Node<DT>* newPtr) : nodePtr(newPtr) {}
+    public:
+        iterator() : nodePtr(nullptr) {}
+
+        // Overload for the comparison operator !=
+        bool operator!=(const iterator& itr) const {
+            return nodePtr != itr.nodePtr;
+        }
+
+        // Overload for the dereference operator *
+        DT& operator*() const {
+            return nodePtr->next->data;
+        }
+
+        // Overload for the postincrement operator ++
+        iterator operator++(int) {
+            iterator temp = *this;
+            nodePtr = nodePtr->next;
+            return temp;
+        }
+        iterator begin() const {
+            return iterator(head);
+        }
+
+        iterator insert(iterator position,const DT& value) {
+            Node<DT>* newNode = new Node<DT>(value, position.nodePtr->next);
+            if (position.nodePtr == tail) tail = newNode;
+            position.nodePtr->next = newNode;
+            return position;
+        }
+        iterator erase(iterator position) {
+            Node<DT> *toDelete = position.nodePtr->next;
+            position.nodePtr->next = position.nodePtr->next->next;
+            if (toDelete == tail) tail = position.nodePtr;
+            delete toDelete;
+            return position;
+        }
+
+    }; // End of inner class iterator
 };
 
 #endif //INC_21F_FLIGHT_PLANNER_DSLINKEDLIST_H
