@@ -68,6 +68,50 @@ public:
         }
 
     }
+    void shortestPath(string start, string end) {
+        DSstack<string> cityStack;
+        DSLinkedList<string> cityList;
+        DSLinkedList<DSstack<string>> pathList;
+        cityStack.push(start);
+        cityList.append(start);
+        for (int i = 0; i < adjacencyList.length(); i++) {
+            adjacencyList.get(i).getDestinations().Iterator(); //iterators initialized
+        }
+        LOOP: while (!cityStack.isEmpty()) {
+        cout << "here" << endl;
+            if (cityStack.getTop() == end) {
+                cout << "New Path!" << endl;
+                pathList.append(cityStack);
+                cityStack.pop();
+                cityList.pop();
+            }
+            else {
+                for (int i = 0; i < adjacencyList.length(); i++) {
+                    cout << "OK" << endl;
+                    if (adjacencyList.get(i).getOrigin() == cityStack.getTop()) {
+                        for (int j = 0; j < adjacencyList.get(i).getDestinations().length(); j ++) {
+                            cout << "woa" << endl;
+                            if (adjacencyList.get(i).getDestinations().getNext() == nullptr) {
+                                cityStack.pop();
+                                cityList.pop();
+                                adjacencyList.get(i).getDestinations().decrement();
+                            }
+                            if (cityList.contains(adjacencyList.get(i).getDestinations().dereference())) {
+                                adjacencyList.get(i).getDestinations().increment();
+                            }
+                            else if (!cityList.contains(adjacencyList.get(i).getDestinations().dereference())) {
+                                cityStack.push(adjacencyList.get(i).getDestinations().dereference());
+                                cityList.append(adjacencyList.get(i).getDestinations().dereference());
+                                adjacencyList.get(i).getDestinations().increment();
+                                goto LOOP;
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
 };
 
 

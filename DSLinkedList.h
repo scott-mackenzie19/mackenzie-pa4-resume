@@ -11,7 +11,9 @@ using namespace std;
 template <typename DT> class Node {
 
 private:
-
+    Node<DT> *next;
+    DT data;
+    Node<DT> *prev;
     //pointer to previous node
     //pointer to next node
     template<typename D2> friend
@@ -22,13 +24,23 @@ public:
         prev = nullptr;
         next = nullptr;
     }
-    DT data;
     Node(const DT& item, Node<DT> * ptr = nullptr) :
         data(item), next(ptr) {}
 
 
-    Node<DT> *next;
-    Node<DT> *prev;
+    DT getData() {
+        return data;
+    }
+    Node<DT>& operator =(const Node<DT>& rhs) {
+        if (this->data == rhs.data) {
+            return *this;
+        }
+        this->data = rhs.data;
+        this->next = rhs.next;
+        this->prev = rhs.prev;
+        return *this;
+    }
+
 } ;
 
 template<typename DT>class DSLinkedList{
@@ -36,9 +48,11 @@ private:
     Node<DT>* tail;
 public:
     Node<DT>* head;
+    Node<DT>* temp;
     DSLinkedList() {
         head = nullptr;
         tail = nullptr;
+        temp = head;
     }
     DSLinkedList(const DSLinkedList<DT>& source) {
         if (source.head == nullptr) {
@@ -259,57 +273,46 @@ bool contains(DT data) {
         }
         return false;
     }
-
-    class iterator {
-        friend class DSLinkedList;
-
-    private:
-        Node<DT> *nodePtr;
-
-        // The constructor is private, so only friends
-        // can create instances of iterators.
-        iterator(Node<DT> *newPtr) : nodePtr(newPtr) {}
-
-    public:
-        iterator() : nodePtr(nullptr) {}
-
-        // Overload for the comparison operator !=
-        bool operator!=(const iterator &itr) const {
-            return nodePtr != itr.nodePtr;
+    void Iterator() {
+        temp = head;
+        if (temp->next) {
+            cout << temp->next->data << endl;
         }
+    }
+    void increment() {
+        if (temp->next) {
+            temp = temp->next;
+        }
+        else {
+            temp = nullptr;
+        }
+    }
+    void decrement() {
+        if (temp->prev) {
+            temp = temp->prev;
+        }
+        else {
+            temp = nullptr;
+        }
+    }
+    DT dereference() {
+        return temp->data;
+    }
+    Node<DT>* getNext() {
+        if (temp->next) {
+            Node<DT> *aye = temp->next;
+            return aye;
+        }
+        else {
+            cout << "Invalid" << endl;
+            return nullptr;
+        }
+    }
+    Node<DT>* getTemp() {
+        return temp;
+    }
 
-        // Overload for the dereference operator *
-        DT &operator*() const {
-            return nodePtr->next->data;
-        }
 
-        // Overload for the postincrement operator ++
-        iterator operator++(int) {
-            iterator temp = *this;
-            nodePtr = nodePtr->next;
-            return temp;
-        }
-    };
-        iterator begin() const {
-            return iterator(head);
-        }
-
-        iterator insert(iterator position,const DT& value) {
-            Node<DT>* newNode = new Node<DT>(value, position.nodePtr->next);
-            if (position.nodePtr == tail) tail = newNode;
-            position.nodePtr->next = newNode;
-            return position;
-        }
-        iterator erase(iterator position) {
-            Node<DT> *toDelete = position.nodePtr->next;
-            position.nodePtr->next = position.nodePtr->next->next;
-            if (toDelete == tail) tail = position.nodePtr;
-            delete toDelete;
-            return position;
-        }
-        Node<DT>* returnhead() {
-            return this->head;
-        }
 
 };
 
