@@ -66,9 +66,8 @@ public:
             cityItem.setDestination(temp);
             adjacencyList.append(cityItem);
         }
-        file.close();
-    }
 
+    }
 };
 
 

@@ -11,23 +11,31 @@ using namespace std;
 template <typename DT> class Node {
 
 private:
-    DT data;
-    Node<DT> *prev; //pointer to previous node
-    Node<DT> *next; //pointer to next node
+
+    //pointer to previous node
+    //pointer to next node
     template<typename D2> friend
     class DSLinkedList; //friend class of DSLinkedList now
+    friend class rwfile;
 public:
     Node() {
         prev = nullptr;
         next = nullptr;
     }
-};
+    DT data;
+    Node(const DT& item, Node<DT> * ptr = nullptr) :
+        data(item), next(ptr) {}
+
+
+    Node<DT> *next;
+    Node<DT> *prev;
+} ;
 
 template<typename DT>class DSLinkedList{
 private:
-    static Node<DT>* head;
-    static Node<DT>* tail;
+    Node<DT>* tail;
 public:
+    Node<DT>* head;
     DSLinkedList() {
         head = nullptr;
         tail = nullptr;
@@ -76,7 +84,7 @@ public:
         if(head == nullptr){ //check if list empty
             head = node;
             tail = node;
-            cout<<"new node added( first node) !"<<endl;
+         //   cout<<"new node added( first node) !"<<endl;
             return;
         }//if not empty, new node added to end
         Node<DT>* temp = head;
@@ -88,7 +96,7 @@ public:
         temp->next = node;
         tail = node;
         temp->prev = prev; //once at end, final data value is linked
-        cout<<"new node added at back!"<<endl;
+      //  cout<<"new node added at back!"<<endl;
     }
     void prepend(DT item){
         Node<DT>* node = new Node<DT>[1];
@@ -96,13 +104,13 @@ public:
         if(head == nullptr){ //list checked if empty
             head = node;
             tail = node;
-            cout<<"new node added (first node) !"<<endl;
+         //   cout<<"new node added (first node) !"<<endl;
             return;
         } //if list not empty, list traversed
         head->prev = node;
         node->next = head;
         head = node;
-        cout<<"new node added at front !"<<endl;
+       // cout<<"new node added at front !"<<endl;
     }
     int length(){
         int len = 0;
@@ -116,7 +124,7 @@ public:
 
     void DSInsert(int index, DT item){
         if(index > length() || index < 0){ //checks if index out of bounds
-            cout<<"index out of bound !"<<endl;
+          //  cout<<"index out of bound !"<<endl;
             return;
         }
         Node<DT>* node = new Node<DT>[1]; //temporary iterator created
@@ -130,7 +138,7 @@ public:
                 }
                 temp->next = node;
                 node->prev = temp;
-                cout<<"new node added at index "<<index<<" !"<<endl;
+               // cout<<"new node added at index "<<index<<" !"<<endl;
                 break;
             }
             count++;
@@ -146,26 +154,26 @@ public:
         cout<<endl<<"---DSlink list items-----"<<endl;
         Node<DT>* temp = head;
         while(temp != nullptr){
-            cout<<temp->data<<" | ";
+            cout << temp->data <<" | ";
             temp = temp->next;
         }
         cout<<endl<<"--------------------------"<<endl;
     }
     void pop(){
         if(head == nullptr){ //checks if list already empty
-            cout<<"linked list is empty !"<<endl;
+           // cout<<"linked list is empty !"<<endl;
             return;
         }
         if(head->next == nullptr){ //checks if list has one item
             head = nullptr;
-            cout<<"last item removed"<<endl;
+           // cout<<"last item removed"<<endl;
             return;
         }
         Node<DT>* temp = head;
         while(temp != nullptr){ //iterates to end and deletes last node of list
             if(temp->next->next == nullptr){
                 temp->next = nullptr;
-                cout<<"end item removed"<<endl;
+                //cout<<"end item removed"<<endl;
                 break;
             }
             temp = temp->next;
@@ -174,22 +182,22 @@ public:
     }
     void removeFront(){
         if(head == nullptr){ //checks if list empty
-            cout<<"linked list is empty !"<<endl;
+            //cout<<"linked list is empty !"<<endl;
             return;
         }
         head = head->next;
         head->next->prev = head;
-        cout<<"front item removed"<<endl; //iterates to front, removes front node
+        //cout<<"front item removed"<<endl; //iterates to front, removes front node
     }
 
     DT get(int index){
         if(head == nullptr){ //checks if linkedlist empty
-            cout<<"linked list is empty !"<<endl;
+            //cout<<"linked list is empty !"<<endl;
             DT useless;
             return useless;
         }
         if(index >= length() || index < 0){ //checks if invalid index,
-            cout<<"index out of bound !"<<endl;
+            //cout<<"index out of bound !"<<endl;
             DT useless;
             return useless;
         }
@@ -240,7 +248,7 @@ public:
 bool contains(DT data) {
         Node<DT>* temp = head;
         if (head == nullptr) {
-            cout << "List is empty !" << endl;
+            //cout << "List is empty !" << endl;
             return false;
         }
         while (temp != nullptr) {
@@ -251,23 +259,27 @@ bool contains(DT data) {
         }
         return false;
     }
+
     class iterator {
-        friend class DSLinkedList<DT>;
+        friend class DSLinkedList;
+
     private:
         Node<DT> *nodePtr;
+
         // The constructor is private, so only friends
         // can create instances of iterators.
-        iterator(Node<DT>* newPtr) : nodePtr(newPtr) {}
+        iterator(Node<DT> *newPtr) : nodePtr(newPtr) {}
+
     public:
         iterator() : nodePtr(nullptr) {}
 
         // Overload for the comparison operator !=
-        bool operator!=(const iterator& itr) const {
+        bool operator!=(const iterator &itr) const {
             return nodePtr != itr.nodePtr;
         }
 
         // Overload for the dereference operator *
-        DT& operator*() const {
+        DT &operator*() const {
             return nodePtr->next->data;
         }
 
@@ -277,6 +289,7 @@ bool contains(DT data) {
             nodePtr = nodePtr->next;
             return temp;
         }
+    };
         iterator begin() const {
             return iterator(head);
         }
@@ -294,8 +307,10 @@ bool contains(DT data) {
             delete toDelete;
             return position;
         }
+        Node<DT>* returnhead() {
+            return this->head;
+        }
 
-    }; // End of inner class iterator
 };
 
 #endif //INC_21F_FLIGHT_PLANNER_DSLINKEDLIST_H

@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
         //runCatchTests();
     }
     else {
-        //runCatchTests();
+        runCatchTests();
         std::cout << "Hello, 2341 students!" << std::endl;
         std::cout << "Attempting to open and write to " << argv[0] << std::endl;
         DSstack<string> stringStack;
