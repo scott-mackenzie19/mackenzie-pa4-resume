@@ -68,49 +68,72 @@ public:
         }
 
     }
+    void printList() {
+        for (int i = 0; i < adjacencyList.length(); i++) {
+            cout << adjacencyList.get(i).getOrigin() << endl;
+            adjacencyList.get(i).getDestinations().displayAll();
+        }
+    }
     void shortestPath(string start, string end) {
         DSstack<string> cityStack;
         DSLinkedList<string> cityList;
-        DSLinkedList<DSstack<string>> pathList;
+        DSLinkedList<DSLinkedList<string>> pathList;
+        DSLinkedList<int> iterList;
         cityStack.push(start);
         cityList.append(start);
+        this->printList();
+        adjacencyList.get(1).getDestinations().displayAll();
         for (int i = 0; i < adjacencyList.length(); i++) {
-            adjacencyList.get(i).getDestinations().Iterator(); //iterators initialized
+            int num = 0;
+            iterList.append(num); //for each list in adjacency list, index initialized to 0
         }
         LOOP: while (!cityStack.isEmpty()) {
-        cout << "here" << endl;
-            if (cityStack.getTop() == end) {
-                cout << "New Path!" << endl;
-                pathList.append(cityStack);
+            cityStack.print();
+            if (cityStack.getTop() == end ) { // if stack.top == destination
+                cout << "here" << endl;
+                pathList.append(cityList);
                 cityStack.pop();
                 cityList.pop();
             }
-            else {
+            else { //if stack.top not destination
                 for (int i = 0; i < adjacencyList.length(); i++) {
-                    cout << "OK" << endl;
                     if (adjacencyList.get(i).getOrigin() == cityStack.getTop()) {
-                        for (int j = 0; j < adjacencyList.get(i).getDestinations().length(); j ++) {
-                            cout << "woa" << endl;
-                            if (adjacencyList.get(i).getDestinations().getNext() == nullptr) {
-                                cityStack.pop();
-                                cityList.pop();
-                                adjacencyList.get(i).getDestinations().decrement();
+                        //cout<< endl;
+                        //cout << adjacencyList.get(i).getOrigin() << endl;
+                        //cout << endl;
+                        //adjacencyList.get(i).getDestinations().displayAll();
+                        while (adjacencyList.get(i).getDestinations().iterateTo(iterList.iterateTo(i)->data) != nullptr) { // for connection in stack.top
+                            if (cityList.contains(adjacencyList.get(i).getDestinations().iterateTo(iterList.get(i))->data)) { // if connection on stack
+                                iterList.iterateTo(i)->data++;
+                                cout << "iterating" << endl;
                             }
-                            if (cityList.contains(adjacencyList.get(i).getDestinations().dereference())) {
-                                adjacencyList.get(i).getDestinations().increment();
-                            }
-                            else if (!cityList.contains(adjacencyList.get(i).getDestinations().dereference())) {
-                                cityStack.push(adjacencyList.get(i).getDestinations().dereference());
-                                cityList.append(adjacencyList.get(i).getDestinations().dereference());
-                                adjacencyList.get(i).getDestinations().increment();
+                            else { //if connection not on stack
+                                cityStack.push(adjacencyList.get(i).getDestinations().iterateTo(iterList.get(i))->data);
+                                cityList.append(adjacencyList.get(i).getDestinations().iterateTo(iterList.get(i))->data);
+                                //cityStack.print();
+                                iterList.iterateTo(i)->data++;
                                 goto LOOP;
                             }
+                        }
+                        if (adjacencyList.get(i).getDestinations().iterateTo(iterList.get(i)) == nullptr) { //if connection is null
+                            cityStack.pop();
+                            cityList.pop();
+                            iterList.iterateTo(i)->data = 0;
+                            i = 0;
                         }
 
                     }
                 }
             }
         }
+        for (int i = 0; i < pathList.length(); i++) {
+            pathList.get(i).displayAll();
+        }
+
+
+        //cout << node->data << endl;
+        cout << "Out" << endl;
+        int storeindex = 0;
     }
 };
 

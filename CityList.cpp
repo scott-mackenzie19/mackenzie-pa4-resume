@@ -8,7 +8,7 @@ string CityList::getOrigin() {
     return originCity;
 }
 
-DSLinkedList<string> CityList::getDestinations() {
+DSLinkedList<string>& CityList::getDestinations() {
     return destinationList;
 }
 

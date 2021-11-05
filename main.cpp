@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
         string file = "sample01-flight-data.txt";
         rwfile file2;
         file2.loadAdjacency(file);
-        file2.shortestPath("Dallas", "Austin");
+        file2.shortestPath("Dallas", "Chicago");
         std::ofstream o(argv[3]);
         o << "Writing to output file." << std::endl;
         o.close();

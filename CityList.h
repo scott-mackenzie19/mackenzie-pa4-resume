@@ -18,7 +18,7 @@ public:
     void setOrigin(string word);
     void setDestination( DSLinkedList<string>& destinations);
     string getOrigin();
-    DSLinkedList<string> getDestinations();
+    DSLinkedList<string>& getDestinations();
 };
 
 
