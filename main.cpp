@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
     else {
         //runCatchTests();
         std::cout << "Hello, 2341 students!" << std::endl;
-        std::cout << "Attempting to open and write to " << argv[0] << std::endl;
+        std::cout << "Attempting to open and write to " << argv[1] << std::endl;
         DSstack<string> stringStack;
         DSLinkedList<string> list;
         DSLinkedList<string> list2;
