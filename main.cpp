@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
         list.append("aye");
         list.append("yes");
         list2 = list;
-        string file = argv[1];
+        string file = "durr";
         rwfile file2;
         file2.loadAdjacency(file);
         file2.shortestPath("Dallas", "Chicago");
