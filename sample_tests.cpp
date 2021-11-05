@@ -66,6 +66,7 @@ TEST_CASE("Stack", "[DSstack]") {
         DSstack<string> list;
         list.push("AYE");
         list.push("WHY");
+        REQUIRE(list.getTop() == "WHY");
         list.push("HELLO");
         REQUIRE(list.getTop() == "HELLO");
     }

@@ -11,28 +11,24 @@ using namespace std;
 template <typename DT> class Node {
 
 private:
-    Node<DT> *next;
     DT data;
-    Node<DT> *prev;
     //pointer to previous node
     //pointer to next node
     template<typename D2> friend
     class DSLinkedList; //friend class of DSLinkedList now
     friend class rwfile;
+
+
 public:
+    Node<DT> *prev;
+    Node<DT> *next;
     Node() {
         prev = nullptr;
         next = nullptr;
-    }
-    Node(const DT& item, Node<DT> * ptr = nullptr) :
-        data(item), next(ptr) {}
 
-
-    DT getData() {
-        return data;
     }
     Node<DT>& operator =(const Node<DT>& rhs) {
-        if (this->data == rhs.data) {
+        if (this->data == rhs.data && this->next == rhs.next) {
             return *this;
         }
         this->data = rhs.data;
@@ -40,19 +36,29 @@ public:
         this->prev = rhs.prev;
         return *this;
     }
-
+    Node<DT>* after() {
+        return next;
+    }
+    Node<DT>* last() {
+        return prev;
+    }
+//overloaded operator
 } ;
 
+
+
 template<typename DT>class DSLinkedList{
+
 private:
     Node<DT>* tail;
+
+    Node<DT> *iter;
 public:
     Node<DT>* head;
-    Node<DT>* temp;
     DSLinkedList() {
         head = nullptr;
         tail = nullptr;
-        temp = head;
+        iter = head;
     }
     DSLinkedList(const DSLinkedList<DT>& source) {
         if (source.head == nullptr) {
@@ -62,11 +68,15 @@ public:
         head->data = source.head->data;
         head->next = nullptr;
         head->prev = nullptr;
+        iter = head;
+        iter->next = head->next;
+        iter->prev = head->prev;
+
         Node<DT> *lastCopied = source.head;  // last node to be copied
         Node<DT> *lastAdded = head;         // last node to be added to the current list
         while (lastCopied->next != nullptr) {
             // create new node
-            Node<DT> *p = new Node<DT>[1];
+            auto *p = new Node<DT>[1];
             p->data = lastCopied->next->data;
             p->next = nullptr;
 
@@ -83,7 +93,7 @@ public:
         DSLinkedList<DT> temp(rhs);
         swap(temp.head, head);
         return *this;
-    } //needs work, shallow copy as of now
+    } //shallow no more
     ~DSLinkedList() {
         Node<DT>* curr = head;
         while (head != nullptr) {
@@ -93,7 +103,7 @@ public:
         }
     }
     void append(DT data) {
-        Node<DT>* node = new Node<DT>[1];
+        auto* node = new Node<DT>[1];
         node->data = data;
         if(head == nullptr){ //check if list empty
             head = node;
@@ -113,7 +123,7 @@ public:
       //  cout<<"new node added at back!"<<endl;
     }
     void prepend(DT item){
-        Node<DT>* node = new Node<DT>[1];
+        auto* node = new Node<DT>[1];
         node->data = item;
         if(head == nullptr){ //list checked if empty
             head = node;
@@ -141,7 +151,7 @@ public:
           //  cout<<"index out of bound !"<<endl;
             return;
         }
-        Node<DT>* node = new Node<DT>[1]; //temporary iterator created
+        auto* node = new Node<DT>[1]; //temporary iterator created
         node->data = item;
         int count = 0;
         Node<DT>* temp = head;
@@ -230,7 +240,8 @@ public:
         }
         return res;
     }
-    void removeat(int index){
+
+     void removeat(int index){
         if(head == nullptr){
             cout<<"linked list is empty !"<<endl;
             return;
@@ -252,7 +263,7 @@ public:
         while(temp != nullptr){
             if(count == index - 1){
                 temp->next = temp->next->next;
-                cout<<"item removed at index "<<index<<endl;
+                cout<<"item removed at index " << index << endl;
                 break;
             }
             count++;
@@ -273,44 +284,68 @@ bool contains(DT data) {
         }
         return false;
     }
-    void Iterator() {
-        temp = head;
-        if (temp->next) {
-            cout << temp->next->data << endl;
-        }
+    Node<DT>* getHead() {
+        return&* head;
     }
-    void increment() {
-        if (temp->next) {
-            temp = temp->next;
+
+    void resetIter() {
+        iter = head;
+    }
+    void forwardIter() {
+        if (iter->next == nullptr) {
+            iter = nullptr;
         }
         else {
-            temp = nullptr;
+            iter = iter->next;
+
+            cout << iter->data << endl;
         }
     }
-    void decrement() {
-        if (temp->prev) {
-            temp = temp->prev;
+    void backIter() {
+        if (iter->prev == nullptr) {
+            iter = nullptr;
+            return;
         }
-        else {
-            temp = nullptr;
+        iter = iter->prev;
+    }
+    bool isIterValid() {
+        if (iter == nullptr) {
+            return false;
+        }
+        return true;
+    }
+    DT& getIter() {
+        cout << "returning " << iter->data;
+        return iter->data;
+    }
+    void setIterData(DT data) {
+         iter->data = data;
+
+    }
+    void setIterPos(int index)  {
+        for (int i = 0; i < index + 1; i++) {
+            iter = iter->next;
         }
     }
-    DT dereference() {
-        return temp->data;
-    }
-    Node<DT>* getNext() {
-        if (temp->next) {
-            Node<DT> *aye = temp->next;
-            return aye;
-        }
-        else {
-            cout << "Invalid" << endl;
+
+    Node<DT>* iterateTo(int index) {
+        Node<DT>* temp = head;
+        if (index >= length() || index < 0) {
+            cout << "index out of bounds" << endl;
             return nullptr;
         }
-    }
-    Node<DT>* getTemp() {
+        int num = 0;
+        while (num < index) {
+            temp = temp->next;
+            num++;
+        }
         return temp;
     }
+
+
+
+
+
 
 
 
