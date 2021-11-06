@@ -11,13 +11,18 @@
 
 
 class rwfile {
+
 private:
+
 DSLinkedList<CityList> adjacencyList;
 DSLinkedList<DSLinkedList<string>> flights;
+
 public:
+
     DSLinkedList<CityList> getAdjacency() {
         return adjacencyList;
     }
+
     void loadAdjacency( string& filename) {
         ifstream file;
         string number;
@@ -66,15 +71,16 @@ public:
             cityItem.setDestination(temp);
             adjacencyList.append(cityItem);
         }
-
     }
+
     void printList() {
         for (int i = 0; i < adjacencyList.length(); i++) {
             cout << adjacencyList.get(i).getOrigin() << endl;
             adjacencyList.get(i).getDestinations().displayAll();
         }
     }
-    void shortestPath(string start, string end) {
+
+    DSLinkedList<DSLinkedList<string>> backtrack(string start, string end) {
         DSstack<string> cityStack;
         DSLinkedList<string> cityList;
         DSLinkedList<DSLinkedList<string>> pathList;
@@ -82,15 +88,12 @@ public:
         cityStack.push(start);
         cityList.append(start);
         this->printList();
-        adjacencyList.get(1).getDestinations().displayAll();
         for (int i = 0; i < adjacencyList.length(); i++) {
             int num = 0;
             iterList.append(num); //for each list in adjacency list, index initialized to 0
         }
         LOOP: while (!cityStack.isEmpty()) {
-            cityStack.print();
             if (cityStack.getTop() == end ) { // if stack.top == destination
-                cout << "here" << endl;
                 pathList.append(cityList);
                 cityStack.pop();
                 cityList.pop();
@@ -98,19 +101,13 @@ public:
             else { //if stack.top not destination
                 for (int i = 0; i < adjacencyList.length(); i++) {
                     if (adjacencyList.get(i).getOrigin() == cityStack.getTop()) {
-                        //cout<< endl;
-                        //cout << adjacencyList.get(i).getOrigin() << endl;
-                        //cout << endl;
-                        //adjacencyList.get(i).getDestinations().displayAll();
                         while (adjacencyList.get(i).getDestinations().iterateTo(iterList.iterateTo(i)->data) != nullptr) { // for connection in stack.top
                             if (cityList.contains(adjacencyList.get(i).getDestinations().iterateTo(iterList.get(i))->data)) { // if connection on stack
                                 iterList.iterateTo(i)->data++;
-                                cout << "iterating" << endl;
                             }
                             else { //if connection not on stack
                                 cityStack.push(adjacencyList.get(i).getDestinations().iterateTo(iterList.get(i))->data);
                                 cityList.append(adjacencyList.get(i).getDestinations().iterateTo(iterList.get(i))->data);
-                                //cityStack.print();
                                 iterList.iterateTo(i)->data++;
                                 goto LOOP;
                             }
@@ -121,7 +118,6 @@ public:
                             iterList.iterateTo(i)->data = 0;
                             i = 0;
                         }
-
                     }
                 }
             }
@@ -129,11 +125,49 @@ public:
         for (int i = 0; i < pathList.length(); i++) {
             pathList.get(i).displayAll();
         }
-
-
-        //cout << node->data << endl;
-        cout << "Out" << endl;
         int storeindex = 0;
+        return pathList;
+    }
+
+    void shortestPath( string& filename , string& filena) {
+        ifstream file;
+        file.open(filename);
+        string throwawy;
+        getline(file, throwawy);
+        DSLinkedList<DSLinkedList<string>> commandList;
+        while (file.good()) {
+            string line;
+            DSLinkedList<string> wordList;
+            getline(file, line);
+            stringstream ss(line);
+            while(ss.good()) {
+                string word;
+                getline(ss, word, ' ');
+                wordList.append(word);
+            }
+            commandList.append(wordList);
+        }
+        file.close();
+        ofstream ofss;
+        ofss.open(filena);
+        ofss.clear();
+        for (int i = 0; i < commandList.length(); i++) {
+            ofss << "Flight " << i + 1 << ": " << commandList.get(i).get(0) << "," << commandList.get(i).get(1) << " (" << commandList.get(i).get(2) << ")" << endl;
+            int count = 0;
+            for (int j = 0; j < backtrack(commandList.get(i).get(0), commandList.get(i).get(1)).length(); j++) {
+                if (count < 3) {
+                    ofss << "  " << "Itinerary " << j + 1 << ":" << endl;
+                   for (int q = 0; q < backtrack(commandList.get(i).get(0), commandList.get(i).get(1)).get(j).length() - 1; q++) {
+                       ofss << "    " << backtrack(commandList.get(i).get(0), commandList.get(i).get(1)).get(j).get(q) << "->" << backtrack(commandList.get(i).get(0), commandList.get(i).get(1)).get(j).get(q + 1) << endl;
+                   }
+                }
+                count++;
+
+            }
+        }
+        ofss.close();
+
+
     }
 };
 

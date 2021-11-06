@@ -37,12 +37,14 @@ int main(int argc, char** argv) {
         list.append("yes");
         list2 = list;
         string file = argv[1];
+        string otherfile = argv[2];
+        string yes = argv[3];
         rwfile file2;
         file2.loadAdjacency(file);
-        file2.shortestPath("Dallas", "Chicago");
-        std::ofstream o(argv[3]);
-        o << "Writing to output file." << std::endl;
-        o.close();
+        file2.shortestPath(otherfile, yes);
+        //std::ofstream o(argv[3]);
+       // o << "Writing to output file." << std::endl;
+       // o.close();
     }
     //
     return 0;
